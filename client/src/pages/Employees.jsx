@@ -1,25 +1,27 @@
 import React from 'react';
-import { Typography, Card } from 'antd';
+import { Typography } from 'antd';
+import EmployeeTable from '../components/employees/EmployeeTable';
 
 const { Title, Paragraph } = Typography;
 
 /**
- * Placeholder Employees Roster Page
+ * Enterprise Employees Roster Page
  *
- * Employee List & Table implementation scheduled for Commit 10.
+ * Renders the primary search-and-filter data matrix view for browsing staff compensation.
  */
 const Employees = () => {
   return (
     <div>
-      <Title level={2}>Employee Roster & Management</Title>
-      <Paragraph>
-        Browse, filter, search, and update enterprise staff profiles. Complete table view integrations and actions will render here.
-      </Paragraph>
-      <Card title="System Notice" style={{ marginTop: 16 }}>
-        <Paragraph style={{ margin: 0 }}>
-          High-performance paginated table interfaces equipped with sorting and deep search filters will be implemented in Commit 10.
+      <div style={{ marginBottom: 20 }}>
+        <Title level={2} style={{ margin: 0, fontWeight: 700, color: '#111827' }}>
+          Employee Roster & Management
+        </Title>
+        <Paragraph type="secondary" style={{ marginTop: 4, fontSize: 15 }}>
+          Search, view, and query organization compensation portfolios instantly. Use dropdown controls to segment regional arrays.
         </Paragraph>
-      </Card>
+      </div>
+
+      <EmployeeTable />
     </div>
   );
 };

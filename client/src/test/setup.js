@@ -14,3 +14,12 @@ Object.defineProperty(window, 'matchMedia', {
     dispatchEvent: () => false,
   }),
 });
+
+// Mock ResizeObserver for Ant Design Table / responsive elements in jsdom
+class ResizeObserver {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
+
+window.ResizeObserver = ResizeObserver;
