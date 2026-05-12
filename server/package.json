@@ -1,0 +1,31 @@
+{
+  "name": "salary-management-server",
+  "version": "1.0.0",
+  "description": "Backend API for salary management tool",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "jest --runInBand --forceExit --detectOpenHandles",
+    "test:watch": "jest --runInBand --watch",
+    "test:coverage": "jest --runInBand --coverage --forceExit --detectOpenHandles",
+    "seed": "node src/db/seed.js",
+    "lint": "eslint src/ tests/"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "mongoose": "^8.9.5",
+    "morgan": "^1.10.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.1",
+    "jest": "^29.7.0",
+    "mongodb-memory-server": "^10.4.0",
+    "nodemon": "^3.1.9",
+    "supertest": "^7.0.0"
+  }
+}
