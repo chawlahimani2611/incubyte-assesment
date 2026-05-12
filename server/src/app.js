@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const employeeRoutes = require('./routes/employeeRoutes');
+const insightsRoutes = require('./routes/insightsRoutes');
 const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
@@ -14,6 +15,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/employees', employeeRoutes);
+app.use('/api/insights', insightsRoutes);
 
 // Handle 404 for undefined routes
 app.use((req, res, next) => {
