@@ -30,6 +30,7 @@ export const useCreateEmployee = () => {
     mutationFn: (data) => apiClient.post('/employees', data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['employees'] });
+      queryClient.invalidateQueries({ queryKey: ['insights'] });
     },
   });
 };
@@ -43,6 +44,7 @@ export const useUpdateEmployee = () => {
     mutationFn: ({ id, data }) => apiClient.put(`/employees/${id}`, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['employees'] });
+      queryClient.invalidateQueries({ queryKey: ['insights'] });
     },
   });
 };
@@ -56,6 +58,7 @@ export const useDeleteEmployee = () => {
     mutationFn: (id) => apiClient.delete(`/employees/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['employees'] });
+      queryClient.invalidateQueries({ queryKey: ['insights'] });
     },
   });
 };

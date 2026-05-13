@@ -97,10 +97,14 @@ const Dashboard = () => {
   };
 
   // Format distribution chart labels mapped to aggregation intervals
-  const formattedDistData = distributionData.map((item) => ({
-    bucket: `$${(item._id?.min / 1000).toFixed(0)}k-$${(item._id?.max / 1000).toFixed(0)}k`,
-    count: item.count,
-  }));
+  const formattedDistData = distributionData.map((item) => {
+    const minVal = item.min ?? item._id?.min ?? 0;
+    const maxVal = item.max ?? item._id?.max ?? 0;
+    return {
+      bucket: `$${(minVal / 1000).toFixed(0)}k-$${(maxVal / 1000).toFixed(0)}k`,
+      count: item.count,
+    };
+  });
 
   const isAnyLoading =
     loadingCountry || loadingJobs || loadingDepts || loadingDist || loadingHeadcount;
