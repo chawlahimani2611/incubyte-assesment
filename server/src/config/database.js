@@ -8,7 +8,7 @@ require('dotenv').config();
  * @returns {Promise<mongoose.Connection>} The Mongoose connection instance
  */
 const connectToDatabase = async () => {
-  const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/salary-management';
+  const mongoURI = process.env.MONGODB_URI || "mongodb+srv://chawlahimani2611:Zxcvbnm098%40%40@salary-management.jd4eifl.mongodb.net/salary-management?retryWrites=true&w=majority";
 
   try {
     await mongoose.connect(mongoURI);
