@@ -1,17 +1,40 @@
 const express = require('express');
 const cors = require('cors');
+const rateLimit = require('express-rate-limit');
 const employeeRoutes = require('./routes/employeeRoutes');
 const insightsRoutes = require('./routes/insightsRoutes');
 const errorHandler = require('./middleware/errorHandler');
+const sanitize = require('./middleware/sanitize');
 
 const app = express();
+
+// Trust proxy header if running behind reverse proxies
+app.set('trust proxy', 1);
+
+// Configure Global Rate Limiter (Bypassed during automated unit/integration suites)
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  limit: 200, // Limit each IP to 200 requests per windowMs
+  standardHeaders: 'draft-8',
+  legacyHeaders: false,
+  message: {
+    success: false,
+    error: {
+      type: 'TOO_MANY_REQUESTS',
+      message: 'Too many requests from this IP, please try again after 15 minutes',
+    },
+  },
+  skip: () => process.env.NODE_ENV === 'test',
+});
 
 // Middleware
 app.use(cors({
   origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
   credentials: true,
 }));
-app.use(express.json());
+app.use(limiter);
+app.use(express.json({ limit: '10kb' })); // Enforce strict JSON body size restrictions
+app.use(sanitize);
 
 // Routes
 app.use('/api/employees', employeeRoutes);

@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import apiClient from '../api/client';
 
 /**
@@ -6,18 +6,9 @@ import apiClient from '../api/client';
  *
  * Orchestrates fetching, caching, and background synchronization of paginated
  * employee datasets matching client filter states.
- *
- * @param {Object} filters
- * @param {number} [filters.page=1]
- * @param {number} [filters.limit=10]
- * @param {string} [filters.search]
- * @param {string} [filters.country]
- * @param {string} [filters.department]
- * @param {string} [filters.sortBy]
- * @param {string} [filters.sortOrder]
+ * NOTE: The server returns { success, data, meta: { total, page, limit, totalPages } }
  */
 const useEmployees = (filters = {}) => {
-  // Extract and clean valid filter properties to avoid passing empty string parameters
   const cleanParams = Object.fromEntries(
     Object.entries(filters).filter(([_, value]) => value !== undefined && value !== '')
   );
@@ -25,8 +16,47 @@ const useEmployees = (filters = {}) => {
   return useQuery({
     queryKey: ['employees', cleanParams],
     queryFn: () => apiClient.get('/employees', { params: cleanParams }),
-    placeholderData: (previousData) => previousData, // keep visible previous page data while fetching next page
-    staleTime: 60 * 1000, // 1 minute
+    placeholderData: (previousData) => previousData,
+    staleTime: 60 * 1000,
+  });
+};
+
+/**
+ * Mutation hook: Create a new employee
+ */
+export const useCreateEmployee = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data) => apiClient.post('/employees', data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['employees'] });
+    },
+  });
+};
+
+/**
+ * Mutation hook: Update an existing employee by ID
+ */
+export const useUpdateEmployee = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, data }) => apiClient.put(`/employees/${id}`, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['employees'] });
+    },
+  });
+};
+
+/**
+ * Mutation hook: Delete an employee by ID
+ */
+export const useDeleteEmployee = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id) => apiClient.delete(`/employees/${id}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['employees'] });
+    },
   });
 };
 
