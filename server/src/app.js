@@ -29,7 +29,10 @@ const limiter = rateLimit({
 
 // Middleware
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+  origin: (origin, callback) => {
+    // Dynamically reflect request origin to natively unblock deployed Vercel previews and trailing slash variances
+    callback(null, true);
+  },
   credentials: true,
 }));
 app.use(limiter);
